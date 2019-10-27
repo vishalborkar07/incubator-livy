@@ -22,7 +22,7 @@
 
   <groupId>org.apache.livy</groupId>
   <artifactId>livy-main</artifactId>
-  <version>0.8.0-incubating-SNAPSHOT</version>
+  <version>0.7.0-incubating-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Livy Project Parent POM</name>
   <description>Livy Project</description>
@@ -78,47 +78,40 @@
   </mailingLists>
 
   <properties>
-    <asynchttpclient.version>2.10.1</asynchttpclient.version>
     <hadoop.version>2.7.3</hadoop.version>
     <hadoop.scope>compile</hadoop.scope>
-    <spark.scala-2.11.version>2.4.5</spark.scala-2.11.version>
-    <spark.scala-2.12.version>2.4.5</spark.scala-2.12.version>
+    <spark.scala-2.11.version>2.2.3</spark.scala-2.11.version>
     <spark.version>${spark.scala-2.11.version}</spark.version>
     <hive.version>3.0.0</hive.version>
     <commons-codec.version>1.9</commons-codec.version>
-    <httpclient.version>4.5.13</httpclient.version>
+    <httpclient.version>4.5.3</httpclient.version>
     <httpcore.version>4.4.4</httpcore.version>
-    <jackson.version>2.12.7</jackson.version>
-    <jackson-databind.version>2.12.7.1</jackson-databind.version>
+    <jackson.version>2.9.9</jackson.version>
     <javax.servlet-api.version>3.1.0</javax.servlet-api.version>
-    <jetty.version>9.4.50.v20221201</jetty.version>
-    <json4s.spark-2.11.version>3.5.3</json4s.spark-2.11.version>
-    <json4s.spark-2.12.version>3.5.3</json4s.spark-2.12.version>
-    <json4s.version>${json4s.spark-2.11.version}</json4s.version>
-    <junit.version>4.13.1</junit.version>
+    <jetty.version>9.3.24.v20180605</jetty.version>
+    <json4s.version>3.2.11</json4s.version>
+    <junit.version>4.11</junit.version>
     <libthrift.version>0.9.3</libthrift.version>
-    <kryo.version>4.0.2</kryo.version>
+    <kryo.version>2.22</kryo.version>
     <metrics.version>3.1.0</metrics.version>
-    <mockito.version>1.10.19</mockito.version>
-    <netty.spark-2.11.version>4.1.86.Final</netty.spark-2.11.version>
-    <netty.spark-2.12.version>4.1.86.Final</netty.spark-2.12.version>
+    <mockito.version>1.9.5</mockito.version>
+    <netty.spark-2.11.version>4.0.37.Final</netty.spark-2.11.version>
     <netty.version>${netty.spark-2.11.version}</netty.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <py4j.version>0.10.7</py4j.version>
     <scala-2.11.version>2.11.12</scala-2.11.version>
-    <scala-2.12.version>2.12.10</scala-2.12.version>
     <scala.binary.version>2.11</scala.binary.version>
     <scala.version>${scala-2.11.version}</scala.version>
-    <scalatest.version>3.0.8</scalatest.version>
-    <scalatra.version>2.6.5</scalatra.version>
+    <scalatest.version>2.2.4</scalatest.version>
+    <scalatra.version>2.3.0</scalatra.version>
     <java.version>1.8</java.version>
     <test.redirectToFile>true</test.redirectToFile>
     <execution.root>${user.dir}</execution.root>
     <spark.home>${execution.root}/dev/spark</spark.home>
     <spark.bin.download.url>
-      https://archive.apache.org/dist/spark/spark-2.4.5/spark-2.4.5-bin-hadoop2.7.tgz
+      https://archive.apache.org/dist/spark/spark-2.2.3/spark-2.2.3-bin-hadoop2.7.tgz
     </spark.bin.download.url>
-    <spark.bin.name>spark-2.4.5-bin-hadoop2.7</spark.bin.name>
+    <spark.bin.name>spark-2.2.3-bin-hadoop2.7</spark.bin.name>
     <!--  used for testing, NCSARequestLog use it for access log  -->
     <livy.log.dir>${basedir}/target</livy.log.dir>
 
@@ -129,8 +122,8 @@
     <skipPySpark3Tests>false</skipPySpark3Tests>
 
     <!-- Required for testing LDAP integration -->
-    <apacheds.version>2.0.0.AM26</apacheds.version>
-    <ldap-api.version>2.1.2</ldap-api.version>
+    <apacheds.version>2.0.0-M21</apacheds.version>
+    <ldap-api.version>1.0.0-M33</ldap-api.version>
 
     <curator.version>2.7.1</curator.version>
     <zookeeper.version>3.4.6</zookeeper.version>
@@ -206,18 +199,15 @@
     <module>client-http</module>
     <module>core</module>
     <module>core/scala-2.11</module>
-    <module>core/scala-2.12</module>
     <module>coverage</module>
     <module>examples</module>
     <module>python-api</module>
     <module>repl</module>
     <module>repl/scala-2.11</module>
-    <module>repl/scala-2.12</module>
     <module>rsc</module>
     <module>scala</module>
     <module>scala-api</module>
     <module>scala-api/scala-2.11</module>
-    <module>scala-api/scala-2.12</module>
     <module>server</module>
     <module>test-lib</module>
     <module>integration-test</module>
@@ -250,12 +240,6 @@
       <artifactId>scalatra-scalatest_${scala.binary.version}</artifactId>
       <version>${scalatra.version}</version>
       <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>org.mockito</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
 
   </dependencies>
@@ -270,8 +254,8 @@
       </dependency>
 
       <dependency>
-        <groupId>com.esotericsoftware</groupId>
-        <artifactId>kryo-shaded</artifactId>
+        <groupId>com.esotericsoftware.kryo</groupId>
+        <artifactId>kryo</artifactId>
         <version>${kryo.version}</version>
       </dependency>
 
@@ -290,7 +274,7 @@
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-databind</artifactId>
-        <version>${jackson-databind.version}</version>
+        <version>${jackson.version}</version>
       </dependency>
 
       <dependency>
@@ -563,12 +547,6 @@
 
       <dependency>
         <groupId>org.scalatra</groupId>
-        <artifactId>scalatra-metrics_${scala.binary.version}</artifactId>
-        <version>${scalatra.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.scalatra</groupId>
         <artifactId>scalatra-test_${scala.binary.version}</artifactId>
         <version>${scalatra.version}</version>
       </dependency>
@@ -577,12 +555,6 @@
         <groupId>net.sf.py4j</groupId>
         <artifactId>py4j</artifactId>
         <version>${py4j.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.asynchttpclient</groupId>
-        <artifactId>async-http-client</artifactId>
-        <version>${asynchttpclient.version}</version>
       </dependency>
 
       <!-- we need a version > 1.7.13 because of SLF4J-324 -->
@@ -639,7 +611,7 @@
         <plugin>
           <groupId>net.alchim31.maven</groupId>
           <artifactId>scala-maven-plugin</artifactId>
-          <version>4.3.0</version>
+          <version>3.2.2</version>
           <executions>
             <execution>
               <goals>
@@ -658,6 +630,7 @@
           <configuration>
             <scalaVersion>${scala.version}</scalaVersion>
             <recompileMode>incremental</recompileMode>
+            <useZincServer>true</useZincServer>
             <checkMultipleScalaVersions>false</checkMultipleScalaVersions>
             <args>
               <arg>-unchecked</arg>
@@ -688,7 +661,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
-          <version>3.2.1</version>
+          <version>2.4.2</version>
         </plugin>
 
         <plugin>
@@ -699,7 +672,6 @@
             <environmentVariables>
               <LIVY_TEST>true</LIVY_TEST>
               <SPARK_HOME>${spark.home}</SPARK_HOME>
-              <LIVY_SPARK_VERSION>${spark.version}</LIVY_SPARK_VERSION>
             </environmentVariables>
             <systemProperties>
               <java.awt.headless>true</java.awt.headless>
@@ -721,7 +693,7 @@
         <plugin>
           <groupId>org.scalatest</groupId>
           <artifactId>scalatest-maven-plugin</artifactId>
-          <version>2.0.0</version>
+          <version>1.0</version>
           <configuration>
             <environmentVariables>
               <LIVY_TEST>true</LIVY_TEST>
@@ -1053,29 +1025,37 @@
       </modules>
     </profile>
 
+    <!-- Spark version profiles -->
     <profile>
-      <id>spark-3.0</id>
+      <id>spark-2.3</id>
+      <properties>
+        <spark.scala-2.11.version>2.3.3</spark.scala-2.11.version>
+        <spark.version>${spark.scala-2.11.version}</spark.version>
+        <netty.spark-2.11.version>4.1.17.Final</netty.spark-2.11.version>
+        <spark.bin.download.url>
+          https://archive.apache.org/dist/spark/spark-2.3.3/spark-2.3.3-bin-hadoop2.7.tgz
+        </spark.bin.download.url>
+        <spark.bin.name>spark-2.3.3-bin-hadoop2.7</spark.bin.name>
+      </properties>
+    </profile>
+
+    <profile>
+      <id>spark-2.4</id>
       <activation>
         <property>
-          <name>spark-3.0</name>
+          <name>spark-2.4</name>
         </property>
       </activation>
       <properties>
-        <spark.scala-2.12.version>3.0.0</spark.scala-2.12.version>
-        <spark.scala-2.11.version>2.4.5</spark.scala-2.11.version>
+        <spark.scala-2.11.version>2.4.3</spark.scala-2.11.version>
         <spark.version>${spark.scala-2.11.version}</spark.version>
-        <netty.spark-2.12.version>4.1.86.Final</netty.spark-2.12.version>
-        <netty.spark-2.11.version>4.1.86.Final</netty.spark-2.11.version>
-        <netty.version>${netty.spark-2.11.version}</netty.version>
+        <netty.spark-2.11.version>4.1.17.Final</netty.spark-2.11.version>
         <java.version>1.8</java.version>
-        <py4j.version>0.10.9</py4j.version>
-        <json4s.spark-2.11.version>3.5.3</json4s.spark-2.11.version>
-        <json4s.spark-2.12.version>3.6.6</json4s.spark-2.12.version>
-        <json4s.version>${json4s.spark-2.11.version}</json4s.version>
+        <py4j.version>0.10.7</py4j.version>
         <spark.bin.download.url>
-          https://archive.apache.org/dist/spark/spark-3.0.0/spark-3.0.0-bin-hadoop2.7.tgz
+          https://archive.apache.org/dist/spark/spark-2.4.3/spark-2.4.3-bin-hadoop2.7.tgz
         </spark.bin.download.url>
-        <spark.bin.name>spark-3.0.0-bin-hadoop2.7</spark.bin.name>
+        <spark.bin.name>spark-2.4.3-bin-hadoop2.7</spark.bin.name>
       </properties>
     </profile>
 
@@ -1120,8 +1100,6 @@
               <thirdPartyFilename>THIRD-PARTY</thirdPartyFilename>
               <sortArtifactByName>true</sortArtifactByName>
               <fileTemplate>${execution.root}/dev/third-party-file.ftl</fileTemplate>
-              <useMissingFile>true</useMissingFile>
-              <missingFile>${execution.root}/dev/third-party-missing-license.properties</missingFile>
             </configuration>
             <executions>
               <execution>
