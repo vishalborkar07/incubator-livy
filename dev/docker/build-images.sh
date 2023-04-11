@@ -18,11 +18,11 @@
 # Fail if there is an error
 set -e
 APACHE_ARCHIVE_ROOT=http://archive.apache.org/dist
-HADOOP_VERSION=3.3.1
+HADOOP_VERSION=2.7
 HADOOP_PACKAGE="hadoop-${HADOOP_VERSION}.tar.gz"
-SPARK_VERSION=3.2.3
-SPARK_PACKAGE="spark-${SPARK_VERSION}-bin-without-hadoop.tgz"
-LIVY_VERSION=0.8.0-incubating-SNAPSHOT
+SPARK_VERSION=2.4.5
+SPARK_PACKAGE="spark-2.4.5-bin-hadoop2.7.tgz"
+LIVY_VERSION=0.7.1-incubating
 LIVY_PACKAGE="apache-livy-${LIVY_VERSION}-bin.zip"
 
 # Download hadoop if needed
@@ -44,6 +44,6 @@ if [ ! -f "livy-dev-server/${LIVY_PACKAGE}" ]; then
 fi 
 
 
-docker build -t livy-dev-base livy-dev-base/
-docker build -t livy-dev-spark livy-dev-spark/ --build-arg HADOOP_VERSION=${HADOOP_VERSION} --build-arg SPARK_VERSION=${SPARK_VERSION}
-docker build -t livy-dev-server livy-dev-server/ --build-arg LIVY_VERSION=${LIVY_VERSION}
+podman build -t livy-dev-base livy-dev-base/
+podman build -t livy-dev-spark livy-dev-spark/ --build-arg HADOOP_VERSION=${HADOOP_VERSION} --build-arg SPARK_VERSION=${SPARK_VERSION}
+podman build -t livy-dev-server livy-dev-server/ --build-arg LIVY_VERSION=${LIVY_VERSION}

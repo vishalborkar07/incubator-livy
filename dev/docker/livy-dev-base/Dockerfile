@@ -44,11 +44,11 @@ RUN apt-get install -qq \
     lsof
 
 # R 3.x install - ensure to add the signing key per https://cran.r-project.org/bin/linux/ubuntu/olderreleasesREADME.html
-RUN add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu xenial-cran35/' && \
-    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
-    apt-get update && \
+RUN add-apt-repository 'deb http://cloud.r-project.org/bin/linux/ubuntu xenial-cran35/' && \
+    apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
+    apt-get update --fix-missing && \
     apt-get -qq install r-base
-
+    
 # Add build dependencies for python2
 # - First we upgrade pip because that makes a lot of things better
 # - Then we remove the provided version of setuptools and install a different version

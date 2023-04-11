@@ -63,30 +63,32 @@ class SparkRInterpreterSpec extends BaseInterpreterSpec {
     ))
   }
 
-  it should "execute multiple statements in one block" in withInterpreter { interpreter =>
-    val response = interpreter.execute(
-      """
-        |x = 1
-        |
-        |y = 2
-        |
-        |x + y
-      """.stripMargin)
-    response should equal(Interpreter.ExecuteSuccess(
-      TEXT_PLAIN -> "[1] 3"
-    ))
-  }
+   it should "execute multiple statements in one block" in withInterpreter { interpreter =>
+  val response = interpreter.execute(
+    """
+      |x = 1
+      |
+      |y = 2
+      |
+      |x + y
+    """.stripMargin.replaceAll("\r", "")
+  )
+  response should equal(Interpreter.ExecuteSuccess(
+    TEXT_PLAIN -> "[1] 3"
+  ))
+}
 
-  it should "get multiple outputs in one block" in withInterpreter { interpreter =>
-    val response = interpreter.execute(
-      """
-        |print("1")
-        |print("2")
-      """.stripMargin)
-    response should equal(Interpreter.ExecuteSuccess(
-      TEXT_PLAIN -> "[1] \"1\"\n[1] \"2\""
-    ))
-  }
+it should "get multiple outputs in one block" in withInterpreter { interpreter =>
+  val response = interpreter.execute(
+    """
+      |print("1")
+      |print("2")
+    """.stripMargin.replaceAll("\r", "")
+  )
+  response should equal(Interpreter.ExecuteSuccess(
+    TEXT_PLAIN -> "[1] \"1\"\n[1] \"2\""
+  ))
+}
 
   it should "capture stdout" in withInterpreter { interpreter =>
     val response = interpreter.execute("cat(3)")
