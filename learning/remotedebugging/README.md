@@ -1,6 +1,5 @@
 #   Remote Debugging
 * #### Clone currunt repository 
-* #### Switch to branch newbranch2
 * #### Build the code with 
 --- 
     mvn clean install 

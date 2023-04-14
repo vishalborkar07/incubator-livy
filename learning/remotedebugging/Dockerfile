@@ -32,7 +32,7 @@ RUN set -eux; \
     mv "/opt/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}" /opt/spark
 
 # WORKDIR /opt/
-ARG LIVY_VERSION = apache-livy-0.8.0-incubating-SNAPSHOT-bin
+ARG LIVY_VERSION=apache-livy-0.8.0-incubating-SNAPSHOT-bin
 
 COPY apache-livy-0.8.0-incubating-SNAPSHOT-bin.zip /
 
@@ -55,18 +55,18 @@ RUN    mv "apache-livy-0.8.0-incubating-SNAPSHOT-bin" /opt/livy/
 ENV SPARK_HOME=/opt/spark
 ENV PATH=$PATH:$SPARK_HOME/bin
 # RUN cp /opt/livy/conf/log4j.properties.template /opt/livy/conf/log4j.properties
-RUN mkdir -p /opt/livy/apache-livy-0.8.0-incubating-SNAPSHOT-bin/logs 
+RUN mkdir -p /opt/livy/logs 
 RUN apt-get update && \
     apt-get install -y scala
 ENV PATH="/opt/scala/bin:${PATH}"
 
-COPY log4j.properties /opt/livy/apache-livy-0.8.0-incubating-SNAPSHOT-bin/conf
-RUN chmod 644 /opt/livy/apache-livy-0.8.0-incubating-SNAPSHOT-bin/conf/log4j.properties
+COPY log4j.properties /opt/livy/conf
+# RUN chmod 644 /opt/livy/conf/log4j.properties
 RUN export LIVY_SERVER_JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
 
 # Expose ports
 EXPOSE 8998
 # Start Livy
-RUN chmod 777 /opt/livy/apache-livy-0.8.0-incubating-SNAPSHOT-bin/bin/livy-server
-CMD ["/opt/livy/apache-livy-0.8.0-incubating-SNAPSHOT-bin/bin/livy-server"]
+RUN chmod 777 /opt/livy/bin/livy-server
+CMD ["/opt/livy/bin/livy-server"]
 # CMD ["/bin/bash"]
