@@ -205,7 +205,9 @@ object LivyConf {
    * livy uses livy.server.zookeeper.url first.
    */
   val RECOVERY_STATE_STORE_URL = Entry("livy.server.recovery.state-store.url", null)
-
+  val KUBERNETES_APP_LOOKUP_MAX_FAILED_TIMES = Entry("livy.server.kubernetes.app-lookup.max-failed.times", "600s")
+    // The size of thread pool to monitor all Kubernetes apps.
+  val KUBERNETES_APP_LOOKUP_THREAD_POOL_SIZE = Entry("livy.server.kubernetes.app-lookup.thread-pool.size", 4)
   /**
     * The policy of curator connecting to zookeeper.
     * For example, m, n means retry m times and the interval of retry is n milliseconds.
