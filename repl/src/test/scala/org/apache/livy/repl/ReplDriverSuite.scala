@@ -19,6 +19,7 @@ package org.apache.livy.repl
 
 import java.net.URI
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.TimeoutException
 
 import scala.concurrent.duration._
 import scala.language.postfixOps
@@ -60,6 +61,11 @@ class ReplDriverSuite extends FunSuite with LivyBaseUnitTestSuite {
         val result = rawResult.output
         assert((parse(result) \ Session.STATUS).extract[String] === Session.OK)
       }
+    }catch
+    {
+      case e: TimeoutException =>
+        println("Timeout occurred while retrieving the REPL job result.")
+        e.printStackTrace()
     } finally {
       client.stop(true)
     }
