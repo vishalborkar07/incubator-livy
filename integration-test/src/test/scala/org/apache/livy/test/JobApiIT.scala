@@ -278,6 +278,9 @@ class JobApiIT extends BaseIntegrationTestSuite with BeforeAndAfterAll with Logg
     process.waitFor()
 
     assert(process.exitValue() === 0)
+
+    info("printing exitValue --" + process.exitValue())
+
   }
 
   private def createPyTestsForPythonAPI(testDir: File): File = {

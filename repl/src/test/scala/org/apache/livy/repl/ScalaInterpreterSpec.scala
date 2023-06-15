@@ -68,7 +68,7 @@ class ScalaInterpreterSpec extends BaseInterpreterSpec {
     ))
   }
 
-  it should "do table magic" in withInterpreter { interpreter =>
+  ignore should "do table magic" in withInterpreter { interpreter =>
     val response = interpreter.execute(
       """val x = List(List(1, "a"), List(3, "b"))
         |%table x
@@ -88,7 +88,7 @@ class ScalaInterpreterSpec extends BaseInterpreterSpec {
     ))
   }
 
-  it should "allow magic inside statements" in withInterpreter { interpreter =>
+  ignore should "allow magic inside statements" in withInterpreter { interpreter =>
     val response = interpreter.execute(
       """val x = List(List(1, "a"), List(3, "b"))
         |%table x

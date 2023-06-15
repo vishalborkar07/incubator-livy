@@ -71,7 +71,8 @@ class SparkRInterpreterSpec extends BaseInterpreterSpec {
         |y = 2
         |
         |x + y
-      """.stripMargin)
+      """.stripMargin.replaceAll("\r", "")
+    )
     response should equal(Interpreter.ExecuteSuccess(
       TEXT_PLAIN -> "[1] 3"
     ))
@@ -82,7 +83,8 @@ class SparkRInterpreterSpec extends BaseInterpreterSpec {
       """
         |print("1")
         |print("2")
-      """.stripMargin)
+      """.stripMargin.replaceAll("\r", "")
+    )
     response should equal(Interpreter.ExecuteSuccess(
       TEXT_PLAIN -> "[1] \"1\"\n[1] \"2\""
     ))
