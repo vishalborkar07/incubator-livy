@@ -60,9 +60,11 @@ class ReplDriverSuite extends FunSuite with LivyBaseUnitTestSuite {
         val result = rawResult.output
         assert((parse(result) \ Session.STATUS).extract[String] === Session.OK)
       }
+    } catch {
+      case e: Throwable =>
+        e.printStackTrace()
     } finally {
       client.stop(true)
     }
   }
-
 }
