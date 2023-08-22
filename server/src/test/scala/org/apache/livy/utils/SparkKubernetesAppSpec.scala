@@ -23,8 +23,8 @@ import java.util.concurrent.atomic.AtomicInteger
 import scala.concurrent.duration._
 
 import io.fabric8.kubernetes.api.model._
-import org.mockito.Matchers.{eq => eqs, _}
 import io.fabric8.kubernetes.client.KubernetesClient
+import org.mockito.Matchers.{eq => eqs, _}
 import org.mockito.Mockito.{atLeast, verify, when}
 import org.mockito.invocation.InvocationOnMock
 import org.mockito.stubbing.Answer

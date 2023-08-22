@@ -380,11 +380,17 @@ class InteractiveSession(
     mockApp: Option[SparkApp]) // For unit test.
   extends Session(id, name, owner, ttl, livyConf)
   with SessionHeartbeat
-  with SparkAppListener {
+  with SparkAppListener
+  with SessionTimeout {
 
   import InteractiveSession._
 
   private var serverSideState: SessionState = initialState
+
+  override protected val sessionTimeout: FiniteDuration = {
+    val sessionTimeoutInSecond = 10
+    Duration(sessionTimeoutInSecond, TimeUnit.SECONDS)
+  }
 
   override protected val heartbeatTimeout: FiniteDuration = {
     val heartbeatTimeoutInSecond = heartbeatTimeoutS
@@ -403,6 +409,7 @@ class InteractiveSession(
   override def start(): Unit = {
     sessionStore.save(RECOVERY_SESSION_TYPE, recoveryMetadata)
     heartbeat()
+    timeout()
     app = mockApp.orElse {
       val driverProcess = client.flatMap { c => Option(c.getDriverProcess) }
         .map(new LineBufferedProcess(_, livyConf.getInt(LivyConf.SPARK_LOGS_SIZE)))
