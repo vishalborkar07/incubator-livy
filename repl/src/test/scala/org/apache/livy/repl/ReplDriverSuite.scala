@@ -19,6 +19,7 @@ package org.apache.livy.repl
 
 import java.net.URI
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.TimeoutException
 
 import scala.concurrent.duration._
 import scala.language.postfixOps

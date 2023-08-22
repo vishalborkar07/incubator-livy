@@ -102,6 +102,7 @@ class SparkKubernetesAppSpec extends FunSpec with LivyBaseUnitTestSuite with Bef
     }
   }
   override def beforeAll(): Unit = {
+
         super.beforeAll()
         val livyConf = new LivyConf()
         livyConf.set(LivyConf.KUBERNETES_POLL_INTERVAL, "500ms")
@@ -150,6 +151,7 @@ class SparkKubernetesAppSpec extends FunSpec with LivyBaseUnitTestSuite with Bef
     }
 
     it("should throw IllegalArgumentException if both oauth file and token provided") {
+
       val conf = new LivyConf(false)
         .set(LivyConf.KUBERNETES_OAUTH_TOKEN_FILE, "dummy_path")
         .set(LivyConf.KUBERNETES_OAUTH_TOKEN_VALUE, "dummy_value")
@@ -158,4 +160,6 @@ class SparkKubernetesAppSpec extends FunSpec with LivyBaseUnitTestSuite with Bef
       }
     }
   }
+
 }
+

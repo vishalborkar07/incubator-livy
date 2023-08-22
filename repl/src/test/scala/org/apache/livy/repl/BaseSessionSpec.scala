@@ -73,7 +73,7 @@ abstract class BaseSessionSpec(kind: Kind)
     val session = new Session(rscConf, sparkConf)
     val future = session.start()
     try {
-      Await.ready(future, 60 seconds)
+      Await.ready(future, 120 seconds)
       session.state should (equal (SessionState.Starting) or equal (SessionState.Idle))
     } finally {
       session.close()

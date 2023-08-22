@@ -88,19 +88,19 @@ RUN    mv "apache-livy-0.8.0-incubating-SNAPSHOT-bin" /opt/livy/
 # Configure Livy
 ENV SPARK_HOME=/opt/spark
 ENV PATH=$PATH:$SPARK_HOME/bin
-# RUN cp /opt/livy/conf/log4j.properties.template /opt/livy/conf/log4j.properties
-RUN mkdir -p /opt/livy/apache-livy-0.8.0-incubating-SNAPSHOT-bin/logs 
+RUN cp /opt/livy/conf/log4j.properties.template /opt/livy/conf/log4j.properties
+RUN mkdir -p /opt/livy/logs
+
 RUN apt-get update && \
     apt-get install -y scala
 ENV PATH="/opt/scala/bin:${PATH}"
 
-# COPY log4j.properties /opt/livy/che-livy-0.8.0-incubating-SNAPSHOT-bin/conf
-# RUN chmod 644 /opt/livy/apache-livy-0.8.0-incubating-SNAPSHOT-bin/conf/log4j.properties
-# RUN export LIVY_SERVER_JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
+COPY log4j.properties /opt/livy/conf/
+RUN chmod 644 /opt/livy/conf/log4j.properties
+RUN export LIVY_SERVER_JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
 
 # Expose ports
-EXPOSE 8998
+EXPOSE 8998 5005
 # Start Livy
-RUN chmod 777 /opt/livy/apache-livy-0.8.0-incubating-SNAPSHOT-bin/bin/livy-server
-CMD ["/opt/livy/apache-livy-0.8.0-incubating-SNAPSHOT-bin/bin/livy-server"]
-# CMD ["/bin/bash"]
+CMD ["/opt/livy/bin/livy-server"]
+

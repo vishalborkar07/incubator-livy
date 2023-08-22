@@ -162,6 +162,9 @@ object SparkKubernetesApp extends Logging {
   private var pollInterval: FiniteDuration = _
   private var appLookupTimeout: FiniteDuration = _
   private var cacheLogSize: Long = _
+  
+  private var LivyConfTime: Long = _
+  private var SlCheckInterval: Long = _
 
   def init(livyConf: LivyConf, client: Option[KubernetesClient] = None): Unit = {
     this.livyConf = livyConf
@@ -174,6 +177,7 @@ object SparkKubernetesApp extends Logging {
     appLookupMaxFailedTimes = livyConf.getTimeAsMs(LivyConf.KUBERNETES_APP_LOOKUP_MAX_FAILED_TIMES).milliseconds.toMillis
 
     sessionLeakageCheckInterval = livyConf.getTimeAsMs(LivyConf.KUBERNETES_APP_LEAKAGE_CHECK_INTERVAL)
+    
     sessionLeakageCheckTimeout = livyConf.getTimeAsMs(LivyConf.KUBERNETES_APP_LEAKAGE_CHECK_TIMEOUT)
     leakedAppsGCThread.setDaemon(true)
     leakedAppsGCThread.setName("LeakedAppsGCThread")
@@ -621,4 +625,6 @@ private[utils] object KubernetesClientFactory {
       option.map(configurator(_, configBuilder)).getOrElse(configBuilder)
     }
   }
+
 }
+
