@@ -20,6 +20,8 @@ package org.apache.livy.server.interactive
 import org.apache.livy.sessions.{Kind, Shared}
 
 class CreateInteractiveRequest {
+  def sessionTimeoutInSecond: Int = ???
+
   var kind: Kind = Shared
   var proxyUser: Option[String] = None
   var jars: List[String] = List()
@@ -35,6 +37,7 @@ class CreateInteractiveRequest {
   var name: Option[String] = None
   var conf: Map[String, String] = Map()
   var heartbeatTimeoutInSecond: Int = 0
+  var sessionTimeoutInSec: Int = 0
   var ttl: Option[String] = None
 
   override def toString: String = {
@@ -51,7 +54,7 @@ class CreateInteractiveRequest {
       (if (queue.isDefined) s"queue: ${queue.get}, " else "") +
       (if (name.isDefined) s"name: ${name.get}, " else "") +
       (if (conf.nonEmpty) s"conf: ${conf.mkString(",")}, " else "") +
-      s"heartbeatTimeoutInSecond: $heartbeatTimeoutInSecond, " +
+      s"heartbeatTimeoutInSecond: $heartbeatTimeoutInSecond, " + s"sessionTimeoutInSec: $sessionTimeoutInSec, "
       (if (ttl.isDefined) s"ttl: ${ttl.get}]" else "]")
   }
 }

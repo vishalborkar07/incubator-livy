@@ -17,12 +17,12 @@
 name: Unit Tests
 on: [push]
 env:
-  MAVEN_OPTS: -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.http.retryHandler.class=standard -Dmaven.wagon.http.retryHandler.count=3
+  MAVEN_OPTS: -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.http.retryHandler.class=standard -Dmaven.wagon.http.retryHandler.count=3 -Drat.numUnapprovedLicenses=100
 jobs:
   build:
     runs-on: ubuntu-20.04
     # TODO: Possibly point to the ./build-ci-image.yaml with the "uses" key
-    container: https://hub.docker.com/r/asifkhatri/build
+    container: ghcr.io/apache/livy-ci:latest
     strategy:
       matrix:
         spark_version: ["2.4", "3.0"]

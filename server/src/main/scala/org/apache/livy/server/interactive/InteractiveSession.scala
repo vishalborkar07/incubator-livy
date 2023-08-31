@@ -53,6 +53,7 @@ case class InteractiveRecoveryMetadata(
     appTag: String,
     kind: Kind,
     heartbeatTimeoutS: Int,
+    sessionTimeoutS: Int,
     owner: String,
     ttl: Option[String],
     proxyUser: Option[String],
@@ -122,6 +123,7 @@ object InteractiveSession extends Logging {
       SessionState.Starting,
       request.kind,
       request.heartbeatTimeoutInSecond,
+      request.sessionTimeoutInSec,
       livyConf,
       owner,
       impersonatedUser,
@@ -150,6 +152,7 @@ object InteractiveSession extends Logging {
       SessionState.Recovering,
       metadata.kind,
       metadata.heartbeatTimeoutS,
+      metadata.sessionTimeoutS,
       livyConf,
       metadata.owner,
       metadata.proxyUser,
@@ -378,6 +381,7 @@ class InteractiveSession(
     initialState: SessionState,
     val kind: Kind,
     heartbeatTimeoutS: Int,
+    sessionTimeoutS:Int,
     livyConf: LivyConf,
     owner: String,
     override val proxyUser: Option[String],
@@ -386,11 +390,17 @@ class InteractiveSession(
     mockApp: Option[SparkApp]) // For unit test.
   extends Session(id, name, owner, ttl, livyConf)
   with SessionHeartbeat
-  with SparkAppListener {
+  with SparkAppListener
+  with SessionTimeout {
 
   import InteractiveSession._
 
   private var serverSideState: SessionState = initialState
+
+  override protected val sessionTimeout: FiniteDuration = {
+    val sessionTimeoutInSecond = sessionTimeoutS
+    Duration(sessionTimeoutInSecond, TimeUnit.SECONDS)
+  }
 
   override protected val heartbeatTimeout: FiniteDuration = {
     val heartbeatTimeoutInSecond = heartbeatTimeoutS
@@ -409,6 +419,7 @@ class InteractiveSession(
   override def start(): Unit = {
     sessionStore.save(RECOVERY_SESSION_TYPE, recoveryMetadata)
     heartbeat()
+    timeout()
     app = mockApp.orElse {
       val driverProcess = client.flatMap { c => Option(c.getDriverProcess) }
         .map(new LineBufferedProcess(_, livyConf.getInt(LivyConf.SPARK_LOGS_SIZE)))
@@ -477,7 +488,7 @@ class InteractiveSession(
 
   override def recoveryMetadata: RecoveryMetadata =
     InteractiveRecoveryMetadata(id, name, appId, appTag, kind,
-      heartbeatTimeout.toSeconds.toInt, owner, None, proxyUser, rscDriverUri)
+      heartbeatTimeout.toSeconds.toInt, sessionTimeout.toSeconds.toInt , owner, None, proxyUser, rscDriverUri)
 
   override def state: SessionState = {
     if (serverSideState == SessionState.Running) {

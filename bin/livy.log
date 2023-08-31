@@ -1,0 +1,33 @@
+nohup: ignoring input
+log4j:WARN No appenders could be found for logger (org.apache.livy.server.AccessManager).
+log4j:WARN Please initialize the log4j system properly.
+log4j:WARN See http://logging.apache.org/log4j/1.2/faq.html#noconfig for more info.
+Exception in thread "main" java.io.IOException: Cannot write log directory /workspace/logs
+	at org.eclipse.jetty.util.RolloverFileOutputStream.setFile(RolloverFileOutputStream.java:245)
+	at org.eclipse.jetty.util.RolloverFileOutputStream.<init>(RolloverFileOutputStream.java:177)
+	at org.eclipse.jetty.util.RolloverFileOutputStream.<init>(RolloverFileOutputStream.java:140)
+	at org.eclipse.jetty.server.RequestLogWriter.doStart(RequestLogWriter.java:199)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:73)
+	at org.eclipse.jetty.util.component.ContainerLifeCycle.start(ContainerLifeCycle.java:169)
+	at org.eclipse.jetty.util.component.ContainerLifeCycle.doStart(ContainerLifeCycle.java:117)
+	at org.eclipse.jetty.server.AbstractNCSARequestLog.doStart(AbstractNCSARequestLog.java:445)
+	at org.eclipse.jetty.server.NCSARequestLog.doStart(NCSARequestLog.java:203)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:73)
+	at org.eclipse.jetty.util.component.ContainerLifeCycle.start(ContainerLifeCycle.java:169)
+	at org.eclipse.jetty.util.component.ContainerLifeCycle.doStart(ContainerLifeCycle.java:117)
+	at org.eclipse.jetty.server.handler.AbstractHandler.doStart(AbstractHandler.java:97)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:73)
+	at org.eclipse.jetty.util.component.ContainerLifeCycle.start(ContainerLifeCycle.java:169)
+	at org.eclipse.jetty.util.component.ContainerLifeCycle.doStart(ContainerLifeCycle.java:117)
+	at org.eclipse.jetty.server.handler.AbstractHandler.doStart(AbstractHandler.java:97)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:73)
+	at org.eclipse.jetty.util.component.ContainerLifeCycle.start(ContainerLifeCycle.java:169)
+	at org.eclipse.jetty.server.Server.start(Server.java:423)
+	at org.eclipse.jetty.util.component.ContainerLifeCycle.doStart(ContainerLifeCycle.java:110)
+	at org.eclipse.jetty.server.handler.AbstractHandler.doStart(AbstractHandler.java:97)
+	at org.eclipse.jetty.server.Server.doStart(Server.java:387)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:73)
+	at org.apache.livy.server.WebServer.start(WebServer.scala:108)
+	at org.apache.livy.server.LivyServer.start(LivyServer.scala:327)
+	at org.apache.livy.server.LivyServer$.main(LivyServer.scala:434)
+	at org.apache.livy.server.LivyServer.main(LivyServer.scala)

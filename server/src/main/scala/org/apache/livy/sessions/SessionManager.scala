@@ -29,7 +29,7 @@ import scala.util.control.NonFatal
 import org.apache.livy.{LivyConf, Logging}
 import org.apache.livy.client.common.ClientConf
 import org.apache.livy.server.batch.{BatchRecoveryMetadata, BatchSession}
-import org.apache.livy.server.interactive.{InteractiveRecoveryMetadata, InteractiveSession, SessionHeartbeatWatchdog}
+import org.apache.livy.server.interactive.{InteractiveRecoveryMetadata, InteractiveSession, SessionHeartbeatWatchdog, SessionTimeoutWatchdog}
 import org.apache.livy.server.recovery.SessionStore
 import org.apache.livy.sessions.Session.RecoveryMetadata
 
@@ -55,10 +55,10 @@ class InteractiveSessionManager(
     sessionStore,
     "interactive",
     mockSessions)
-  with SessionHeartbeatWatchdog[InteractiveSession, InteractiveRecoveryMetadata]
-  {
-    start()
-  }
+    with SessionHeartbeatWatchdog[InteractiveSession, InteractiveRecoveryMetadata] with SessionTimeoutWatchdog[InteractiveSession, InteractiveRecoveryMetadata] {
+    start1()
+    start2()
+    }
 
 class SessionManager[S <: Session, R <: RecoveryMetadata : ClassTag](
     protected val livyConf: LivyConf,

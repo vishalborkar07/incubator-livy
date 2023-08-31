@@ -26,9 +26,9 @@ import org.apache.livy.server.SessionServlet
 import org.apache.livy.sessions.{Session, SessionManager}
 
 /**
-  * A session trait to provide heartbeat expiration check.
-  * Note: Session will not expire if heartbeat() was never called.
-  */
+ * A session trait to provide heartbeat expiration check.
+ * Note: Session will not expire if heartbeat() was never called.
+ */
 trait SessionHeartbeat {
   protected val heartbeatTimeout: FiniteDuration
 
@@ -39,20 +39,22 @@ trait SessionHeartbeat {
     if (heartbeatTimeout > Duration.Zero) {
       heartbeatDeadline = Some(heartbeatTimeout.fromNow)
     }
-
-    _lastHeartbeat = new Date()
   }
 
-  def lastHeartbeat: Date = synchronized { _lastHeartbeat }
+  def lastHeartbeat: Date = synchronized {
+    _lastHeartbeat
+  }
 
-  def heartbeatExpired: Boolean = synchronized { heartbeatDeadline.exists(_.isOverdue()) }
+  def heartbeatExpired: Boolean = synchronized {
+    heartbeatDeadline.exists(_.isOverdue())
+  }
 }
 
 /**
-  * Servlet can mixin this trait to update session's heartbeat
-  * whenever a /sessions/:id REST call is made. e.g. GET /sessions/:id
-  * Note: GET /sessions doesn't update heartbeats.
-  */
+ * Servlet can mixin this trait to update session's heartbeat
+ * whenever a /sessions/:id REST call is made. e.g. GET /sessions/:id
+ * Note: GET /sessions doesn't update heartbeats.
+ */
 trait SessionHeartbeatNotifier[S <: Session with SessionHeartbeat, R <: RecoveryMetadata]
   extends SessionServlet[S, R] {
 
@@ -79,9 +81,9 @@ trait SessionHeartbeatNotifier[S <: Session with SessionHeartbeat, R <: Recovery
 }
 
 /**
-  * A SessionManager trait.
-  * It will create a thread that periodically deletes sessions with expired heartbeat.
-  */
+ * A SessionManager trait.
+ * It will create a thread that periodically deletes sessions with expired heartbeat.
+ */
 trait SessionHeartbeatWatchdog[S <: Session with SessionHeartbeat, R <: RecoveryMetadata] {
   self: SessionManager[S, R] =>
 
@@ -90,27 +92,29 @@ trait SessionHeartbeatWatchdog[S <: Session with SessionHeartbeat, R <: Recovery
       val interval = livyConf.getTimeAsMs(LivyConf.HEARTBEAT_WATCHDOG_INTERVAL)
       info("Heartbeat watchdog thread started.")
       while (true) {
-        deleteExpiredSessions()
+        deleteExpiredSessions1()
         Thread.sleep(interval)
       }
     }
   }
 
-  protected def start(): Unit = {
+  protected def start1(): Unit = {
     assert(!watchdogThread.isAlive())
 
     watchdogThread.setDaemon(true)
     watchdogThread.start()
   }
 
-  private[interactive] def deleteExpiredSessions(): Unit = {
+  private[interactive] def deleteExpiredSessions1(): Unit = {
     // Delete takes time. If we use .filter().foreach() here, the time difference between we check
     // expiration and the time we delete the session might be huge. To avoid that, check expiration
     // inside the foreach block.
     sessions.values.foreach { s =>
       if (s.heartbeatExpired) {
         info(s"Session ${s.id} expired. Last heartbeat is at ${s.lastHeartbeat}.")
-        try { delete(s) } catch {
+        try {
+          delete(s)
+        } catch {
           case t: Throwable =>
             warn(s"Exception was thrown when deleting expired session ${s.id}", t)
         }
@@ -118,3 +122,4 @@ trait SessionHeartbeatWatchdog[S <: Session with SessionHeartbeat, R <: Recovery
     }
   }
 }
+

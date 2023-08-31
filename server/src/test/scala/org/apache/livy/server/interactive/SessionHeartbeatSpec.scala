@@ -86,7 +86,7 @@ class SessionHeartbeatSpec extends FunSpec with Matchers {
 
       n.register(expiredSession)
       n.register(nonExpiredSession)
-      n.deleteExpiredSessions()
+      n.deleteExpiredSessions1()
 
       verify(expiredSession).stop()
       verify(nonExpiredSession, never).stop()

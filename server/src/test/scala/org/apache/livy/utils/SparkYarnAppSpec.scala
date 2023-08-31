@@ -23,6 +23,7 @@ import java.util.concurrent.atomic.{AtomicBoolean, AtomicInteger}
 import scala.collection.JavaConverters._
 import scala.concurrent.duration._
 import scala.language.postfixOps
+import scala.language.reflectiveCalls
 
 import org.apache.hadoop.yarn.api.records._
 import org.apache.hadoop.yarn.api.records.FinalApplicationStatus.UNDEFINED
